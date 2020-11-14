@@ -34,8 +34,6 @@ def evaluate_vi(path, aggregator, model):
     # Loop over all input_text in dataloader
     all_outputs, all_targets = list(), list()
     for i, (text, target) in enumerate(tqdm(dataloader)):
-        if i > 5:
-            break
         target = target[0] 
         text = text[0] 
 
