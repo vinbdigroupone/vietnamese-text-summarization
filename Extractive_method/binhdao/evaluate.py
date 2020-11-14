@@ -2,6 +2,10 @@ import rouge
 from Dataset import VietDataset, make_dataloader
 from tqdm import tqdm
 
+def prepare_results(p, r, f, metric):
+    return '\t{}:\t{}: {:5.2f}\t{}: {:5.2f}\t{}: {:5.2f}'.format(metric, 'P', 100.0 * p, 'R', 100.0 * r, 'F1', 100.0 * f)
+
+
 def evaluate_vi(path, aggregator, model):
     ''' Evaluate model using rouge score
 
@@ -30,6 +34,8 @@ def evaluate_vi(path, aggregator, model):
     # Loop over all input_text in dataloader
     all_outputs, all_targets = list(), list()
     for i, (text, target) in enumerate(tqdm(dataloader)):
+        if i > 5:
+            break
         target = target[0] 
         text = text[0] 
 
@@ -49,5 +55,5 @@ def evaluate_vi(path, aggregator, model):
                     print('\t' + prepare_results(results_per_ref['p'][reference_id], results_per_ref['r'][reference_id], results_per_ref['f'][reference_id]))
             print()
         else:
-            print(prepare_results(results['p'], results['r'], results['f']))
+            print(prepare_results(results['p'], results['r'], results['f'], metric))
     print()
