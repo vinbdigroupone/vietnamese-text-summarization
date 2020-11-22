@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from phobert_extractive_text_summ import phoBertExtractiveModel
 
 DEBUG = True
 
@@ -9,14 +10,15 @@ app.config.from_object(__name__)
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
+model = phoBertExtractiveModel()
 
 # sanity check route
 @app.route('/raw', methods=['GET'])
 def rawtextsummerizer():
     query = request.args.get("text")
-    print(query)
+    summary = model.get_summarization(query)
     return jsonify({
-        'answer': 'hello world'
+        'answer': summary
     })
 
 @app.route('/url', methods=['GET'])
